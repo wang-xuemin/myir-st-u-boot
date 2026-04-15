@@ -842,9 +842,22 @@ static void board_stm32mp13x_dk_init(void)
 	uclass_get_device_by_driver(UCLASS_NOP, DM_DRIVER_GET(goodix), &dev);
 }
 
+static void early_backlight_on(void)
+{
+	struct gpio_desc desc;
+
+	if (!dm_gpio_lookup_name("A11", &desc)) {
+		dm_gpio_request(&desc, "bl");
+		dm_gpio_set_dir_flags(&desc, GPIOD_IS_OUT);
+		dm_gpio_set_value(&desc, 1);
+		printf("BL ON early\n");
+	}
+}
+
 /* board dependent setup after realloc */
 int board_init(void)
 {
+	early_backlight_on();
 	struct udevice *dev;
 	int ret;
 
