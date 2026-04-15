@@ -12,21 +12,28 @@
 	};
 
 	config {
-		//u-boot,boot-led = "led-blue";
-		//u-boot,error-led = "led-red";
 		u-boot,mmc-env-partition = "u-boot-env";
 		st,adc_usb_pd = <&adc1 6>, <&adc1 12>;
-		//st,fastboot-gpios = <&gpioa 13 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
-		//st,stm32prog-gpios = <&gpioa 14 (GPIO_ACTIVE_LOW | GPIO_PULL_UP)>;
 	};
 
-	//leds {
-	//	led-red {
-	//		color = <LED_COLOR_ID_RED>;
-	//		gpios = <&gpioa 13 GPIO_ACTIVE_LOW>;
-	//		default-state = "off";
-	//	};
-	//};
+	/* * 新增：GPIO Hog 配置
+	 * 作用：在 GPIO 驱动加载时立即拉高 PA11，实现开机即点亮背光
+	 */
+	backlight_pins: backlight-pins {
+		u-boot,dm-pre-reloc; // 确保在 U-Boot 早期阶段初始化
+
+		backlight_en_hog {
+			gpio-hog;
+			gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>; // 指定 PA11 为高电平有效
+			output-high;                         // 初始化为高电平输出
+			line-name = "backlight_enable";       // 方便在命令行调试显示
+		};
+	};
+};
+
+/* 确保 GPIOA 控制器本身在早期阶段可用 */
+&gpioa {
+	u-boot,dm-pre-reloc;
 };
 
 &adc_1 {
