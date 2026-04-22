@@ -21,7 +21,6 @@
 	 */
 	backlight_pins: backlight-pins {
 		u-boot,dm-pre-reloc; // 确保在 U-Boot 早期阶段初始化
-
 		backlight_en_hog {
 			gpio-hog;
 			gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>; // 指定 PA11 为高电平有效

@@ -40,6 +40,19 @@
 		};
 	};
 
+	/* * 新增：GPIO Hog 配置
+	 * 作用：在 GPIO 驱动加载时立即拉高 PA11，实现开机即点亮背光
+	 */
+	backlight_pins: backlight-pins {
+		u-boot,dm-pre-reloc; // 确保在 U-Boot 早期阶段初始化
+		backlight_en_hog {
+			gpio-hog;
+			gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>; // 指定 PA11 为高电平有效
+			output-high;                         // 初始化为高电平输出
+			line-name = "backlight_enable";       // 方便在命令行调试显示
+		};
+	};
+
 	clocks {
 		clk_ext_camera: clk-ext-camera {
 			#clock-cells = <0>;
@@ -205,7 +218,8 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&ltdc_pins_a>;
 	pinctrl-1 = <&ltdc_sleep_pins_a>;
-	status = "disabled";
+	status = "okay";
+	u-boot,dm-pre-proper;
 };
 
 &rtc {
