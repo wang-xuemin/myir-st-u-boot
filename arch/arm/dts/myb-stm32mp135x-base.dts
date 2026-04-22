@@ -46,7 +46,7 @@
 		status = "okay";
 		power-supply = <&v3v3_ao>;
 		backlight = <&panel_backlight>;
-		data-mapping = "rgb888";
+		data-mapping = "rgb666";
 		bits-per-color = <8>;
 		display-timings {
 			native-mode = <&timing0>;
@@ -243,9 +243,15 @@
 
 &ltdc {
 	status = "okay";
+
+	assigned-clocks = <&rcc LTDC_PX>;
+	assigned-clock-parents = <&rcc PLL4_Q>;
+	assigned-clock-rates = <65000000>;
+
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&ltdc_pins_a>;
 	pinctrl-1 = <&ltdc_sleep_pins_a>;
+
 	port {
 		ltdc_out_rgb: endpoint {
 			remote-endpoint = <&panel_in_rgb>;
