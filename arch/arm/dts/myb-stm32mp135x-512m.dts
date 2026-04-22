@@ -4,10 +4,6 @@
  * Author: Alexandre Torgue <alexandre.torgue@foss.st.com> for STMicroelectronics.
  */
 
-/* 1. 引入必要的硬件定义头文件，而不是引用 .dts */
-#include <dt-bindings/gpio/gpio.h>
-#include "stm32mp135.dtsi"
-#include "stm32mp13xf.dtsi"
 #include "myb-stm32mp135x-base.dts"
 
 / {
@@ -28,6 +24,12 @@
 		#size-cells = <1>;
 		ranges;
 		stdout-path = "serial0:115200n8";
+
+		framebuffer {
+			compatible = "simple-framebuffer";
+			clocks = <&rcc LTDC_PX>;
+			status = "disabled";
+		};
 	};
 
 	/*LCD Panel*/
