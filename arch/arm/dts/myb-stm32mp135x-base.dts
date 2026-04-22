@@ -36,21 +36,48 @@
 		framebuffer {
 			compatible = "simple-framebuffer";
 			clocks = <&rcc LTDC_PX>;
-			status = "disabled";
+			status = "okay";
 		};
 	};
 
-	/* * 新增：GPIO Hog 配置
-	 * 作用：在 GPIO 驱动加载时立即拉高 PA11，实现开机即点亮背光
-	 */
-	backlight_pins: backlight-pins {
-		u-boot,dm-pre-reloc; // 确保在 U-Boot 早期阶段初始化
-		backlight_en_hog {
-			gpio-hog;
-			gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>; // 指定 PA11 为高电平有效
-			output-high;                         // 初始化为高电平输出
-			line-name = "backlight_enable";       // 方便在命令行调试显示
+	/*LCD Panel*/
+	panel_ltdc_rgb: panel_ltdc_rgb {
+		compatible = "panel-simple";
+		status = "okay";
+		power-supply = <&v3v3_ao>;
+		backlight = <&panel_backlight>;
+		data-mapping = "rgb888";
+		bits-per-color = <8>;
+		display-timings {
+			native-mode = <&timing0>;
+			timing0: timing0 {
+				clock-frequency = <65000000>;
+				hactive = <1024>;
+				vactive = <768>;
+				hfront-porch = <24>;
+				hback-porch  = <160>;
+				hsync-len    = <136>;
+				vfront-porch = <3>;
+				vback-porch  = <29>;
+				vsync-len    = <6>;
+				hsync-active = <0>;
+				vsync-active = <0>;
+				de-active    = <1>;
+				pixelclk-active = <1>;
+			};
 		};
+		port {
+			panel_in_rgb: endpoint {
+				remote-endpoint = <&ltdc_out_rgb>;
+			};
+		};
+	};
+
+	panel_backlight: backlight {
+		compatible = "gpio-backlight";
+		gpios = <&gpioa 11 GPIO_ACTIVE_HIGH>;
+		default-on;
+		status = "okay";
 	};
 
 	clocks {
@@ -219,23 +246,9 @@
 	pinctrl-names = "default", "sleep";
 	pinctrl-0 = <&ltdc_pins_a>;
 	pinctrl-1 = <&ltdc_sleep_pins_a>;
-	u-boot,dm-pre-proper;
-	display-timings {
-		native-mode = <&timing0>;
-		timing0: timing0 {
-			clock-frequency = <65000000>; /* 1024x768 @ 60Hz */
-			hactive = <1024>;
-			vactive = <768>;
-			hfront-porch = <24>;
-			hback-porch = <160>;
-			hsync-len = <136>;
-			vfront-porch = <3>;
-			vback-porch = <29>;
-			vsync-len = <6>;
-			hsync-active = <0>;
-			vsync-active = <0>;
-			de-active = <1>;
-			pixelclk-active = <1>;
+	port {
+		ltdc_out_rgb: endpoint {
+			remote-endpoint = <&panel_in_rgb>;
 		};
 	};
 };
