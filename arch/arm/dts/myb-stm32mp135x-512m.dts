@@ -25,17 +25,11 @@
 		#size-cells = <1>;
 		ranges;
 		stdout-path = "serial0:115200n8";
-
-		framebuffer {
-			compatible = "simple-framebuffer";
-			clocks = <&rcc LTDC_PX>;
-			status = "okay";
-		};
 	};
 
 	/*LCD Panel*/
 	panel_ltdc_rgb: panel_ltdc_rgb {
-		compatible = "panel-simple";
+		compatible = "panel-dpi";
 		status = "okay";
 		power-supply = <&v3v3_ao>;
 		backlight = <&panel_backlight>;
@@ -91,6 +85,22 @@
 		optee@de000000 {
 			reg = <0xde000000 0x2000000>;
 			no-map;
+		};
+	};
+};
+
+&ltdc {
+	status = "okay";
+	pinctrl-names = "default", "sleep";
+	pinctrl-0 = <&ltdc_pins_a>;
+	pinctrl-1 = <&ltdc_sleep_pins_a>;
+
+	// 3. 强制显存指向预留区域（可选，如果 probe 还是失败）
+	// memory-region = <&optee_framebuffer>;
+
+	port {
+		ltdc_out_rgb: endpoint {
+			remote-endpoint = <&panel_in_rgb>;
 		};
 	};
 };
