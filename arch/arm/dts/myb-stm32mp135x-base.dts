@@ -41,7 +41,7 @@
 	};
 
 	/*LCD Panel*/
-	panel: panel {
+	panel_ltdc_rgb: panel {
 		compatible = "simple-panel";
 		status = "okay";
 		power-supply = <&v3v3_ao>;

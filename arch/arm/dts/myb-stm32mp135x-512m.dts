@@ -55,18 +55,21 @@
 };
 
 /*LCD Panel*/
-&panel {
+&panel_ltdc_rgb {
 	status = "okay";
+	u-boot,dm-pre-reloc;
 	bootph-all;
 };
 
 &panel_backlight {
 	status = "okay";
+	u-boot,dm-pre-reloc;
 	bootph-all;
 };
 
 &ltdc {
 	status = "okay";
+	u-boot,dm-pre-reloc;
 	bootph-all;
 
 	assigned-clocks = <&rcc LTDC_PX>;
@@ -87,5 +90,6 @@
 /* 开启 RCC 对应的显示时钟 */
 &rcc {
 	status = "okay";
+	u-boot,dm-pre-reloc;
 	bootph-all;
 };
