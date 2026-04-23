@@ -33,7 +33,7 @@
 	};
 
 	/*LCD Panel*/
-	panel_ltdc_rgb: panel {
+	panel_lcd_rgb: panel {
 		compatible = "simple-panel";
 		status = "okay";
 		u-boot,dm-pre-reloc;
