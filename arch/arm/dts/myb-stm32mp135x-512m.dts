@@ -33,8 +33,8 @@
 	};
 
 	/*LCD Panel*/
-	panel_lcd_rgb: panel {
-		compatible = "simple-panel";
+	panel_ltdc_rgb: panel_ltdc_rgb {
+		compatible = "myir,070tft-7";
 		status = "okay";
 		u-boot,dm-pre-reloc;
 		bootph-all;
