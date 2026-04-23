@@ -33,7 +33,7 @@
 	};
 
 	/*LCD Panel*/
-	panel_ltdc_rgb: panel_ltdc_rgb {
+	panel_ltdc_rgb: panel {
 		compatible = "myir,070tft-7";
 		status = "okay";
 		u-boot,dm-pre-reloc;
