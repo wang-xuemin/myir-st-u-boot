@@ -36,7 +36,7 @@
 		framebuffer {
 			compatible = "simple-framebuffer";
 			clocks = <&rcc LTDC_PX>;
-			status = "disabled";
+			status = "okay";
 		};
 	};
 
@@ -161,52 +161,54 @@
 };
 
 &eth1 {
-        status = "okay";
-        pinctrl-0 = <&eth1_rgmii_pins_a>;
-        pinctrl-1 = <&eth1_rgmii_sleep_pins_a>;
-        pinctrl-names = "default", "sleep";
-        phy-mode = "rgmii-id";
-        max-speed = <1000>;
-        phy-handle = <&phy0_eth1>;
-        // st,ext-phyclk;
-        // st,eth-clk-sel;
-        st,phy-reset-gpios = <&gpiob 10 GPIO_ACTIVE_HIGH>;
+	status = "okay";
+	pinctrl-0 = <&eth1_rgmii_pins_a>;
+	pinctrl-1 = <&eth1_rgmii_sleep_pins_a>;
+	pinctrl-names = "default", "sleep";
+	phy-mode = "rgmii-id";
+	max-speed = <1000>;
+	phy-handle = <&phy0_eth1>;
 
-        mdio1 {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                compatible = "snps,dwmac-mdio";
-                phy0_eth1: ethernet-phy@0 {
-                                compatible = "ethernet-phy-ieee802.3-c22";
-                                reg = <0>;
-                };
-        };
+	st,ext-phyclk;
+	st,eth-clk-sel;
+
+	st,phy-reset-gpios = <&gpiob 10 GPIO_ACTIVE_HIGH>;
+
+	mdio0 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "snps,dwmac-mdio";
+		phy0_eth1: ethernet-phy@0 {
+			compatible = "yt8531s", "ethernet-phy-ieee802.3-c22";
+			reg = <0>;
+		};
+	};
 };
 
 &eth2 {
-        status = "okay";
-        pinctrl-0 = <&eth2_rgmii_pins_a>;
-        pinctrl-1 = <&eth2_rgmii_sleep_pins_a>;
+	status = "okay";
+	pinctrl-0 = <&eth2_rgmii_pins_a>;
+	pinctrl-1 = <&eth2_rgmii_sleep_pins_a>;
 
-        pinctrl-names = "default", "sleep";
-        phy-mode = "rgmii-id";
-        max-speed = <1000>;
-        phy-handle = <&phy0_eth2>;
-        // st,ext-phyclk;
-        // st,eth-clk-sel;
-        phy-supply = <&v3v3_ao>;
-        st,phy-reset-gpios =  <&gpioh 5 GPIO_ACTIVE_HIGH>;
-        // reset-deassert-us = <1000>;
-        // reset-assert-us = <1000>;
-        mdio1 {
-                #address-cells = <1>;
-                #size-cells = <0>;
-                compatible = "snps,dwmac-mdio";
-                phy0_eth2: ethernet-phy@2 {
-                                compatible = "ethernet-phy-ieee802.3-c22";
-                                reg = <2>;
-                };
-        };
+	pinctrl-names = "default", "sleep";
+	phy-mode = "rgmii-id";
+	max-speed = <1000>;
+	phy-handle = <&phy0_eth2>;
+
+	st,ext-phyclk;
+	st,eth-clk-sel;
+
+	st,phy-reset-gpios =  <&gpioh 5 GPIO_ACTIVE_HIGH>;
+
+	mdio1 {
+		#address-cells = <1>;
+		#size-cells = <0>;
+		compatible = "snps,dwmac-mdio";
+		phy0_eth2: ethernet-phy@2 {
+			compatible = "yt8531s", "ethernet-phy-ieee802.3-c22";
+			reg = <2>;
+		};
+	};
 };
 
 &i2c1 {

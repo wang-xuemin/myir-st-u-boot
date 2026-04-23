@@ -28,13 +28,13 @@
 		framebuffer {
 			compatible = "simple-framebuffer";
 			clocks = <&rcc LTDC_PX>;
-			status = "disabled";
+			status = "okay";
 		};
 	};
 
 	/*LCD Panel*/
 	panel_ltdc_rgb: panel_ltdc_rgb {
-		compatible = "panel-dpi";
+		compatible = "panel-simple";
 		status = "okay";
 		power-supply = <&v3v3_ao>;
 		backlight = <&panel_backlight>;
